@@ -27,14 +27,13 @@ tasks.withType(JavaCompile::class.java).all {
 }
 
 gradlePlugin {
-    website = "https://github.com/ftbteam/ftb-gradle-plugin"
-    vcsUrl = "https://github.com/ftbteam/ftb-gradle-plugin"
-//    testSourceSet(sourceSets["test"])
+    website = "https://github.com/ftbteam/Ashwing"
+    vcsUrl = "https://github.com/ftbteam/Ashwing"
 
-    plugins.create("ftb-gradle") {
-        id = "dev.ftb.services.ftbgradle"
-        implementationClass = "dev.ftb.services.ftbgradle.FTBGradlePlugin"
-        displayName = "FTB Gradle"
+    plugins.create("ashwing") {
+        id = "dev.ftb.services.ashwing"
+        implementationClass = "dev.ftb.services.ashwing.AshwingPlugin"
+        displayName = "Ashwing"
         description = "Tools for FTB Mods"
         version = project.version
     }

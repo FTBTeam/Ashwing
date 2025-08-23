@@ -1,19 +1,19 @@
-package dev.ftb.services.ftbgradle.extensions;
+package dev.ftb.services.ashwing.extensions;
 
-import dev.ftb.services.ftbgradle.IntegrationTest;
-import dev.ftb.services.ftbgradle.constants.MavenRepositories;
+import dev.ftb.services.ashwing.IntegrationTest;
+import dev.ftb.services.ashwing.constants.MavenRepositories;
 import org.gradle.testkit.runner.BuildTask;
 import org.gradle.testkit.runner.TaskOutcome;
 import org.junit.jupiter.api.Test;
 
-public class FTBUtilsGradleExtensionTest extends IntegrationTest {
+public class AshwingExtensionTest extends IntegrationTest {
     @Test
     void injectsFTBMavenAndSnapshots() {
         var result = testBuilder()
                 .buildScript("""
                         repositories {
-                            ftbUtils.repos().ftb()
-                            ftbUtils.repos().ftb(true) // Snapshots
+                            ashwing.repos().ftb()
+                            ashwing.repos().ftb(true) // Snapshots
                         }
                         
                         tasks.register("testRepos") {

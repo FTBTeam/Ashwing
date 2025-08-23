@@ -6,7 +6,7 @@ Modding helper plugin for gradle targeted to remove code duplication amongst pro
 
 ```gradle
 plugins {
-    id 'dev.ftb.services.ftbgradle' version '0.1.0'
+    id 'dev.ftb.services.ashwing' version '0.1.0'
 }
 ```
 

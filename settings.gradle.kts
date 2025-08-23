@@ -1,2 +1,2 @@
-rootProject.name = "ftb-gradle"
+rootProject.name = "Ashwing"
 

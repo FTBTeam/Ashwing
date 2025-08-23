@@ -1,6 +1,6 @@
-package dev.ftb.services.ftbgradle.extension.utils;
+package dev.ftb.services.ashwing.extension.utils;
 
-import dev.ftb.services.ftbgradle.constants.MavenRepositories;
+import dev.ftb.services.ashwing.constants.MavenRepositories;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
 import org.gradle.api.artifacts.repositories.RepositoryContentDescriptor;
@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 /**
  * Loads of helper methods for adding repositories to the project.
  */
+@SuppressWarnings("unused")
 public class Repos {
     private final Project project;
 
@@ -33,25 +34,6 @@ public class Repos {
 
     public MavenArtifactRepository ftb(boolean snapshots, @Nullable Consumer<RepositoryContentDescriptor> extraContent) {
         var maven = snapshots ? MavenRepositories.FTB_MAVEN_SNAPSHOTS : MavenRepositories.FTB_MAVEN_RELEASES;
-        return createMaven(maven.getUrl(), maven.getName(), extraContent);
-    }
-    //#endregion
-
-    //#region SAPS Maven
-    public MavenArtifactRepository saps() {
-        return saps(false, null);
-    }
-
-    public MavenArtifactRepository saps(boolean snapshots) {
-        return saps(snapshots, null);
-    }
-
-    public MavenArtifactRepository saps(Consumer<RepositoryContentDescriptor> extraContent) {
-        return saps(false, extraContent);
-    }
-
-    public MavenArtifactRepository saps(boolean snapshots, @Nullable Consumer<RepositoryContentDescriptor> extraContent) {
-        var maven = snapshots ? MavenRepositories.SAPS_MAVEN_SNAPSHOTS : MavenRepositories.SAPS_MAVEN_RELEASES;
         return createMaven(maven.getUrl(), maven.getName(), extraContent);
     }
     //#endregion
@@ -116,16 +98,6 @@ public class Repos {
     }
     //#endregion
 
-    //#region Quilt Maven
-    public MavenArtifactRepository quilt() {
-        return quilt(null);
-    }
-
-    public MavenArtifactRepository quilt(Consumer<RepositoryContentDescriptor> extraContent) {
-        return createMaven(MavenRepositories.QUILT_MAVEN.getUrl(), MavenRepositories.QUILT_MAVEN.getName(), extraContent);
-    }
-    //#endregion
-
     //#region CurseMaven
     public MavenArtifactRepository curseMaven() {
         return createMaven(MavenRepositories.CURSEMAVEN.getUrl(), MavenRepositories.CURSEMAVEN.getName(), content -> {
@@ -139,16 +111,6 @@ public class Repos {
         return createMaven(MavenRepositories.MODRINTH.getUrl(), MavenRepositories.MODRINTH.getName(), contents -> {
             MavenRepositories.MODRINTH.getStaticIncludes().forEach(contents::includeGroup);
         });
-    }
-    //#endregion
-
-    //#region CreeperHost
-    public MavenArtifactRepository creeperHost() {
-        return creeperHost(null);
-    }
-
-    public MavenArtifactRepository creeperHost(Consumer<RepositoryContentDescriptor> extraContent) {
-        return createMaven(MavenRepositories.CREEPERHOST.getUrl(), MavenRepositories.CREEPERHOST.getName(), extraContent);
     }
     //#endregion
 

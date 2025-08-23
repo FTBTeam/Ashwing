@@ -1,4 +1,4 @@
-package dev.ftb.services.ftbgradle;
+package dev.ftb.services.ashwing;
 
 import org.gradle.testkit.runner.BuildResult;
 import org.gradle.testkit.runner.GradleRunner;
@@ -53,7 +53,7 @@ public class IntegrationTest {
             buildScriptContents = """
                     plugins {
                         id 'java'
-                        id 'dev.ftb.services.ftbgradle'
+                        id 'dev.ftb.services.ashwing'
                     }
                     """.stripIndent();
 
