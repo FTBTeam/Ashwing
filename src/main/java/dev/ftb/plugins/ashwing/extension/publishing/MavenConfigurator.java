@@ -25,18 +25,11 @@ public record MavenConfigurator(Project project, AshwingExtension ashwingExtensi
             return;
         }
 
-        var mavenUsername = maven.getUsername().getOrNull();
-        var mavenPassword = maven.getPassword().getOrNull();
-
-        if (StrHelper.isNullOrEmpty(mavenUsername) || StrHelper.isNullOrEmpty(mavenPassword)) {
-            throw new IllegalStateException("Maven publishing is enabled, but no username or password was provided.");
-        }
-
         Helpers.getSelfProjectOrLoaderChildren(this.project)
-                .forEach(e -> e.afterEvaluate(theProject -> applyMavenPublications(theProject, mavenUsername, mavenPassword, publishing)));
+                .forEach(e -> e.afterEvaluate(theProject -> applyMavenPublications(theProject, publishing)));
     }
 
-    public void applyMavenPublications(Project theProject, String mavenUsername, String mavenPassword, AshwingPublishingExtension ashwingPublishing) {
+    public void applyMavenPublications(Project theProject, AshwingPublishingExtension ashwingPublishing) {
         theProject.getPlugins().withType(JavaPlugin.class, javaPlugin -> {
             // Check if the publishing extension is already applied
             if (!theProject.getPlugins().hasPlugin(MavenPublishPlugin.class)) {
@@ -44,13 +37,20 @@ public record MavenConfigurator(Project project, AshwingExtension ashwingExtensi
             }
 
             PublishingExtension publishingExtension = theProject.getExtensions().getByType(PublishingExtension.class);
-            publishingExtension.repositories(config -> config.maven(mavenRepo -> {
-                mavenRepo.setUrl("https://maven.ftb.dev");
-                mavenRepo.credentials(credentials -> {
-                    credentials.setUsername(mavenUsername);
-                    credentials.setPassword(mavenPassword);
-                });
-            }));
+            MavenOptions maven = ashwingPublishing.maven();
+
+            var mavenUsername = maven.getUsername().getOrNull();
+            var mavenPassword = maven.getPassword().getOrNull();
+
+            if (!StrHelper.isNullOrEmpty(mavenUsername) && !StrHelper.isNullOrEmpty(mavenPassword)) {
+                publishingExtension.repositories(config -> config.maven(mavenRepo -> {
+                    mavenRepo.setUrl("https://maven.ftb.dev");
+                    mavenRepo.credentials(credentials -> {
+                        credentials.setUsername(mavenUsername);
+                        credentials.setPassword(mavenPassword);
+                    });
+                }));
+            }
 
             publishingExtension.publications(publications -> {
                 var publicationName = "ashwingMaven" + StrHelper.toTitleCase(theProject.getName());
