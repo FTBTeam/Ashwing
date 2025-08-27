@@ -6,7 +6,7 @@ plugins {
 
 val isSnapshot = providers.environmentVariable("SNAPSHOT").getOrElse("false").toBoolean()
 
-group = "dev.ftb.services"
+group = "dev.ftb.plugins"
 version = "0.1.0"
 
 repositories {
@@ -38,8 +38,8 @@ gradlePlugin {
     vcsUrl = "https://github.com/ftbteam/Ashwing"
 
     plugins.create("ashwing") {
-        id = "dev.ftb.services.ashwing"
-        implementationClass = "dev.ftb.services.ashwing.AshwingPlugin"
+        id = "dev.ftb.plugins.ashwing"
+        implementationClass = "dev.ftb.plugins.ashwing.AshwingPlugin"
         displayName = "Ashwing"
         description = "Tools for FTB Mods"
         version = project.version
