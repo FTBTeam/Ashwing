@@ -57,7 +57,7 @@ public class AshwingExtension {
         }
 
         project.afterEvaluate(p -> {
-            new MavenConfigurator(p).configure();
+            new MavenConfigurator(p, this).configure();
             new ModPublisherConfigurator(p).configure();
         });
     }

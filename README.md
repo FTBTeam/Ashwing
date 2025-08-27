@@ -25,6 +25,10 @@ plugins {
 
 _More to come_
 
+### Todos
+
+- Support signing of jars before publishing
+
 ## Usage
 
 Gradle should provide auto-completion for our extensions but here is a vague example of how you might configure Ashwing
