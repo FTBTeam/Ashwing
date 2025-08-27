@@ -9,10 +9,11 @@ import org.gradle.api.tasks.TaskContainer;
 public class AshwingPlugin implements Plugin<Project> {
     @Override
     public void apply(Project project) {
-        ExtensionContainer extensions = project.getExtensions();
+        // Tasks
         TaskContainer tasks = project.getTasks();
 
         // Extensions
+        ExtensionContainer extensions = project.getExtensions();
         extensions.create("ashwing", AshwingExtension.class, project);
     }
 }

@@ -1,128 +1,140 @@
 package dev.ftb.services.ashwing.extension.utils;
 
 import dev.ftb.services.ashwing.constants.MavenRepositories;
+import org.gradle.api.Action;
 import org.gradle.api.Project;
-import org.gradle.api.artifacts.repositories.MavenArtifactRepository;
-import org.gradle.api.artifacts.repositories.RepositoryContentDescriptor;
+import org.gradle.api.artifacts.repositories.MavenRepositoryContentDescriptor;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Consumer;
 
 /**
  * Loads of helper methods for adding repositories to the project.
  */
 @SuppressWarnings("unused")
-public class Repos {
-    private final Project project;
-
-    public Repos(Project project) {
-        this.project = project;
-    }
-
+public record Repos(Project project) {
     //#region FTB Maven
-    public MavenArtifactRepository ftb() {
-        return ftb(false, null);
+    public void ftb() {
+        ftb(false,null);
     }
 
-    public MavenArtifactRepository ftb(boolean snapshots) {
-        return ftb(snapshots, null);
+    public void ftbSnapshots() {
+        ftb(true, null);
     }
 
-    public MavenArtifactRepository ftb(Consumer<RepositoryContentDescriptor> extraContent) {
-        return ftb(false, extraContent);
+    public void ftb(Action<? super MavenRepositoryContentDescriptor> extraContent) {
+        ftb(false, extraContent);
     }
 
-    public MavenArtifactRepository ftb(boolean snapshots, @Nullable Consumer<RepositoryContentDescriptor> extraContent) {
+    public void ftb(boolean snapshots, @Nullable Action<? super MavenRepositoryContentDescriptor> extraContent) {
         var maven = snapshots ? MavenRepositories.FTB_MAVEN_SNAPSHOTS : MavenRepositories.FTB_MAVEN_RELEASES;
-        return createMaven(maven.getUrl(), maven.getName(), extraContent);
-    }
-    //#endregion
-
-    //#region Architectury Maven
-    public MavenArtifactRepository architectury() {
-        return architectury(null);
-    }
-
-    public MavenArtifactRepository architectury(Consumer<RepositoryContentDescriptor> extraContent) {
-        return createMaven(MavenRepositories.ARCH_MAVEN.getUrl(), MavenRepositories.ARCH_MAVEN.getName(), extraContent);
-    }
-    //#endregion
-
-    //#region Shedaniel Maven
-    public MavenArtifactRepository shedaniel() {
-        return shedaniel(null);
-    }
-
-    public MavenArtifactRepository shedaniel(Consumer<RepositoryContentDescriptor> extraContent) {
-        return createMaven(MavenRepositories.SHEDAN_MAVEN.getUrl(), MavenRepositories.SHEDAN_MAVEN.getName(), extraContent);
+        createMaven(maven.getUrl(), maven.getName(), extraContent);
     }
     //#endregion
 
     //#region Mojang Maven
-    public MavenArtifactRepository mojang() {
-        return mojang(null);
+    public void mojang() {
+        mojang(null);
     }
 
-    public MavenArtifactRepository mojang(Consumer<RepositoryContentDescriptor> extraContent) {
-        return createMaven(MavenRepositories.MOJANG_MAVEN.getUrl(), MavenRepositories.MOJANG_MAVEN.getName(), extraContent);
+    public void mojang(Action<? super MavenRepositoryContentDescriptor> extraContent) {
+        createMaven(MavenRepositories.MOJANG_MAVEN.getUrl(), MavenRepositories.MOJANG_MAVEN.getName(), extraContent);
     }
     //#endregion
 
     //#region Forge Maven
-    public MavenArtifactRepository forge() {
-        return forge(null);
+    public void forge() {
+        forge(null);
     }
 
-    public MavenArtifactRepository forge(Consumer<RepositoryContentDescriptor> extraContent) {
-        return createMaven(MavenRepositories.FORGE_MAVEN.getUrl(), MavenRepositories.FORGE_MAVEN.getName(), extraContent);
+    public void forge(Action<? super MavenRepositoryContentDescriptor> extraContent) {
+        createMaven(MavenRepositories.FORGE_MAVEN.getUrl(), MavenRepositories.FORGE_MAVEN.getName(), extraContent);
     }
     //#endregion
 
     //#region Neoforge Maven
-    public MavenArtifactRepository neoforge() {
-        return neoforge(null);
+    public void neoforge() {
+        neoforge(null);
     }
 
-    public MavenArtifactRepository neoforge(Consumer<RepositoryContentDescriptor> extraContent) {
-        return createMaven(MavenRepositories.NEOFORGE_MAVEN.getUrl(), MavenRepositories.NEOFORGE_MAVEN.getName(), extraContent);
+    public void neoforge(Action<? super MavenRepositoryContentDescriptor> extraContent) {
+        createMaven(MavenRepositories.NEOFORGE_MAVEN.getUrl(), MavenRepositories.NEOFORGE_MAVEN.getName(), extraContent);
     }
     //#endregion
 
     //#region Fabric Maven
-    public MavenArtifactRepository fabric() {
-        return fabric(null);
+    public void fabric() {
+        fabric(null);
     }
 
-    public MavenArtifactRepository fabric(Consumer<RepositoryContentDescriptor> extraContent) {
-        return createMaven(MavenRepositories.FABRIC_MAVEN.getUrl(), MavenRepositories.FABRIC_MAVEN.getName(), extraContent);
+    public void fabric(Action<? super MavenRepositoryContentDescriptor> extraContent) {
+        createMaven(MavenRepositories.FABRIC_MAVEN.getUrl(), MavenRepositories.FABRIC_MAVEN.getName(), extraContent);
     }
     //#endregion
 
     //#region CurseMaven
-    public MavenArtifactRepository curseMaven() {
-        return createMaven(MavenRepositories.CURSEMAVEN.getUrl(), MavenRepositories.CURSEMAVEN.getName(), content -> {
+    public void curseMaven() {
+        createMaven(MavenRepositories.CURSEMAVEN.getUrl(), MavenRepositories.CURSEMAVEN.getName(), content -> {
             MavenRepositories.CURSEMAVEN.getStaticIncludes().forEach(content::includeGroup);
         });
     }
     //#endregion
 
     //#region Modrinth
-    public MavenArtifactRepository modrinth() {
-        return createMaven(MavenRepositories.MODRINTH.getUrl(), MavenRepositories.MODRINTH.getName(), contents -> {
+    public void modrinth() {
+        createMaven(MavenRepositories.MODRINTH.getUrl(), MavenRepositories.MODRINTH.getName(), contents -> {
             MavenRepositories.MODRINTH.getStaticIncludes().forEach(contents::includeGroup);
         });
     }
     //#endregion
 
-    private MavenArtifactRepository createMaven(String url, String name, @Nullable Consumer<RepositoryContentDescriptor> extraContent) {
-        return project.getRepositories().maven(repo -> {
+    //#region Common Modding Repositories
+    public void architectury() {
+        architectury(null);
+    }
+
+    public void architectury(Action<? super MavenRepositoryContentDescriptor> extraContent) {
+        createMaven(MavenRepositories.ARCH_MAVEN.getUrl(), MavenRepositories.ARCH_MAVEN.getName(), extraContent);
+    }
+
+    public void shedaniel() {
+        shedaniel(null);
+    }
+
+    public void shedaniel(Action<? super MavenRepositoryContentDescriptor> extraContent) {
+        createMaven(MavenRepositories.SHEDAN_MAVEN.getUrl(), MavenRepositories.SHEDAN_MAVEN.getName(), extraContent);
+    }
+
+    public void latvian() {
+        latvian(null);
+    }
+
+    public void latvian(Action<? super MavenRepositoryContentDescriptor> extraContent) {
+        createMaven(MavenRepositories.LATVIAN.getUrl(), MavenRepositories.LATVIAN.getName(), extraContent);
+    }
+
+    public void modmaven() {
+        modmaven(null);
+    }
+
+    public void modmaven(Action<? super MavenRepositoryContentDescriptor> extraContent) {
+        createMaven(MavenRepositories.MODMAVEN.getUrl(), MavenRepositories.MODMAVEN.getName(), extraContent);
+    }
+
+    public void terraformers() {
+        terraformers(null);
+    }
+
+    public void terraformers(Action<? super MavenRepositoryContentDescriptor> extraContent) {
+        createMaven(MavenRepositories.TERRAFORMERS.getUrl(), MavenRepositories.TERRAFORMERS.getName(), extraContent);
+    }
+    //#endregion
+
+    private void createMaven(String url, String name, @Nullable Action<? super MavenRepositoryContentDescriptor> extraContent) {
+        project.getRepositories().maven(repo -> {
             repo.setUrl(url);
             repo.setName(name);
-            repo.content(content -> {
-                if (extraContent != null) {
-                    extraContent.accept(content);
-                }
-            });
+            if (extraContent != null) {
+                repo.mavenContent(extraContent);
+            }
         });
     }
 }

@@ -12,7 +12,10 @@ public enum MavenRepositories {
     NEOFORGE_MAVEN("https://maven.neoforge.dev", "Neoforge Maven"),
     FABRIC_MAVEN("https://maven.fabricmc.net", "Fabric Maven"),
     CURSEMAVEN("https://maven.cursemaven.com", "CurseMaven", "curse.maven"),
-    MODRINTH("https://api.modrinth.com/maven", "Modrinth", "maven.modrinth");
+    MODRINTH("https://api.modrinth.com/maven", "Modrinth", "maven.modrinth"),
+    LATVIAN("https://maven.latvian.dev", "Latvian Maven", "dev.latvian.mods", "dev.latvian.apps"),
+    MODMAVEN("https://modmaven.dev", "ModMaven"),
+    TERRAFORMERS("https://maven.terraformersmc.com", "TerraformersMC", "com.terraformersmc"),;
 
     private final String url;
     private final String name;

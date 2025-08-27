@@ -11,9 +11,16 @@ version = "0.1.0"
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
 }
 
 dependencies {
+    // Use modmuss50's plugin to help with publishing
+    implementation("me.modmuss50:mod-publish-plugin:0.8.4")
+
+    // Commons lang3
+    implementation("org.apache.commons:commons-lang3:3.18.0")
+
     testImplementation(platform("org.junit:junit-bom:5.10.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
