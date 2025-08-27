@@ -5,11 +5,24 @@ import org.gradle.api.JavaVersion;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.PluginContainer;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Helpers {
+    private static final String CHANGELOG_FILE = "CHANGELOG.md";
+
+    public static File getChangelogFile(Project project) {
+        Project rootProject = project.getRootProject();
+        File file = rootProject.file("./" + CHANGELOG_FILE);
+        if (!file.exists()) {
+            throw new RuntimeException("Changelog file not found: " + file.getAbsolutePath());
+        }
+
+        return file;
+    }
+
     public static List<Project> getSelfProjectOrLoaderChildren(Project rootProject) {
         var childProjects = rootProject.getChildProjects().values();
         boolean containsLoaderChildren = childProjects.stream().anyMatch(child -> ModLoader.stringContainsLoader(child.getName()));

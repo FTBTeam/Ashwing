@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record ModPublisherConfigurator(Project project) {
-    // TODO: Handle changelogs!
     public void configure() {
         AshwingExtension ashwing = project.getExtensions().getByType(AshwingExtension.class);
         AshwingPublishingExtension publishing = ashwing.getPublishing();
@@ -33,7 +32,7 @@ public record ModPublisherConfigurator(Project project) {
 
         mppExtension.getDryRun().set(!curseToken.isPresent() && !modrinthToken.isPresent());
         mppExtension.getType().set(publishing.getReleaseType());
-        mppExtension.getChangelog().set("lmao");
+        mppExtension.getChangelog().set(ashwing.createChangelog());
 
         var javaVersion = Helpers.getJavaVersionFromProject(project);
 

@@ -2,8 +2,10 @@ package dev.ftb.services.ashwing.extension;
 
 import dev.ftb.services.ashwing.extension.publishing.MavenConfigurator;
 import dev.ftb.services.ashwing.extension.publishing.ModPublisherConfigurator;
+import dev.ftb.services.ashwing.extension.utils.Changelog;
 import dev.ftb.services.ashwing.extension.utils.Repos;
 import dev.ftb.services.ashwing.extension.utils.Utils;
+import dev.ftb.services.ashwing.utils.Helpers;
 import me.modmuss50.mpp.MppPlugin;
 import org.gradle.api.Action;
 import org.gradle.api.Project;
@@ -71,7 +73,7 @@ public class AshwingExtension {
      * General utilities for Ashwing projects.
      */
     public Utils utils() {
-        return new Utils(project);
+        return Utils.INSTANCE;
     }
 
     /**
@@ -100,6 +102,11 @@ public class AshwingExtension {
      */
     public Property<String> getModName() {
         return modName;
+    }
+
+    public String createChangelog() {
+        var changelogFile = Helpers.getChangelogFile(this.project);
+        return Changelog.INSTANCE.extractCurrentVersionChanges(changelogFile, this.project.getVersion().toString());
     }
 
     /**

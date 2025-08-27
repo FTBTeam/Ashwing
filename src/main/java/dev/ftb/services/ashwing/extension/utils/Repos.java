@@ -26,7 +26,7 @@ public record Repos(Project project) {
 
     public void ftb(boolean snapshots, @Nullable Action<? super MavenRepositoryContentDescriptor> extraContent) {
         var maven = snapshots ? MavenRepositories.FTB_MAVEN_SNAPSHOTS : MavenRepositories.FTB_MAVEN_RELEASES;
-        createMaven(maven.getUrl(), maven.getName(), extraContent);
+        createMaven(maven, extraContent);
     }
     //#endregion
 
@@ -36,7 +36,7 @@ public record Repos(Project project) {
     }
 
     public void mojang(Action<? super MavenRepositoryContentDescriptor> extraContent) {
-        createMaven(MavenRepositories.MOJANG_MAVEN.getUrl(), MavenRepositories.MOJANG_MAVEN.getName(), extraContent);
+        createMaven(MavenRepositories.MOJANG_MAVEN, extraContent);
     }
     //#endregion
 
@@ -46,7 +46,7 @@ public record Repos(Project project) {
     }
 
     public void forge(Action<? super MavenRepositoryContentDescriptor> extraContent) {
-        createMaven(MavenRepositories.FORGE_MAVEN.getUrl(), MavenRepositories.FORGE_MAVEN.getName(), extraContent);
+        createMaven(MavenRepositories.FORGE_MAVEN, extraContent);
     }
     //#endregion
 
@@ -56,7 +56,7 @@ public record Repos(Project project) {
     }
 
     public void neoforge(Action<? super MavenRepositoryContentDescriptor> extraContent) {
-        createMaven(MavenRepositories.NEOFORGE_MAVEN.getUrl(), MavenRepositories.NEOFORGE_MAVEN.getName(), extraContent);
+        createMaven(MavenRepositories.NEOFORGE_MAVEN, extraContent);
     }
     //#endregion
 
@@ -66,23 +66,19 @@ public record Repos(Project project) {
     }
 
     public void fabric(Action<? super MavenRepositoryContentDescriptor> extraContent) {
-        createMaven(MavenRepositories.FABRIC_MAVEN.getUrl(), MavenRepositories.FABRIC_MAVEN.getName(), extraContent);
+        createMaven(MavenRepositories.FABRIC_MAVEN, extraContent);
     }
     //#endregion
 
     //#region CurseMaven
     public void curseMaven() {
-        createMaven(MavenRepositories.CURSEMAVEN.getUrl(), MavenRepositories.CURSEMAVEN.getName(), content -> {
-            MavenRepositories.CURSEMAVEN.getStaticIncludes().forEach(content::includeGroup);
-        });
+        createMaven(MavenRepositories.CURSEMAVEN, null);
     }
     //#endregion
 
     //#region Modrinth
     public void modrinth() {
-        createMaven(MavenRepositories.MODRINTH.getUrl(), MavenRepositories.MODRINTH.getName(), contents -> {
-            MavenRepositories.MODRINTH.getStaticIncludes().forEach(contents::includeGroup);
-        });
+        createMaven(MavenRepositories.MODRINTH, null);
     }
     //#endregion
 
@@ -92,7 +88,7 @@ public record Repos(Project project) {
     }
 
     public void architectury(Action<? super MavenRepositoryContentDescriptor> extraContent) {
-        createMaven(MavenRepositories.ARCH_MAVEN.getUrl(), MavenRepositories.ARCH_MAVEN.getName(), extraContent);
+        createMaven(MavenRepositories.ARCH_MAVEN, extraContent);
     }
 
     public void shedaniel() {
@@ -100,7 +96,7 @@ public record Repos(Project project) {
     }
 
     public void shedaniel(Action<? super MavenRepositoryContentDescriptor> extraContent) {
-        createMaven(MavenRepositories.SHEDAN_MAVEN.getUrl(), MavenRepositories.SHEDAN_MAVEN.getName(), extraContent);
+        createMaven(MavenRepositories.SHEDAN_MAVEN, extraContent);
     }
 
     public void latvian() {
@@ -108,7 +104,7 @@ public record Repos(Project project) {
     }
 
     public void latvian(Action<? super MavenRepositoryContentDescriptor> extraContent) {
-        createMaven(MavenRepositories.LATVIAN.getUrl(), MavenRepositories.LATVIAN.getName(), extraContent);
+        createMaven(MavenRepositories.LATVIAN, extraContent);
     }
 
     public void modmaven() {
@@ -116,7 +112,7 @@ public record Repos(Project project) {
     }
 
     public void modmaven(Action<? super MavenRepositoryContentDescriptor> extraContent) {
-        createMaven(MavenRepositories.MODMAVEN.getUrl(), MavenRepositories.MODMAVEN.getName(), extraContent);
+        createMaven(MavenRepositories.MODMAVEN, extraContent);
     }
 
     public void terraformers() {
@@ -124,17 +120,24 @@ public record Repos(Project project) {
     }
 
     public void terraformers(Action<? super MavenRepositoryContentDescriptor> extraContent) {
-        createMaven(MavenRepositories.TERRAFORMERS.getUrl(), MavenRepositories.TERRAFORMERS.getName(), extraContent);
+        createMaven(MavenRepositories.TERRAFORMERS, extraContent);
     }
     //#endregion
 
-    private void createMaven(String url, String name, @Nullable Action<? super MavenRepositoryContentDescriptor> extraContent) {
+    private void createMaven(MavenRepositories mavenRepo, @Nullable Action<? super MavenRepositoryContentDescriptor> extraContent) {
         project.getRepositories().maven(repo -> {
-            repo.setUrl(url);
-            repo.setName(name);
-            if (extraContent != null) {
-                repo.mavenContent(extraContent);
-            }
+            repo.setUrl(mavenRepo.getUrl());
+            repo.setName(mavenRepo.getName());
+
+            repo.mavenContent(mavenContent -> {
+                if (extraContent != null) {
+                    extraContent.execute(mavenContent);
+                }
+
+                for (var include : mavenRepo.getStaticIncludes()) {
+                    mavenContent.includeGroup(include);
+                }
+            });
         });
     }
 }

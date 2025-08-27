@@ -12,8 +12,8 @@ public class AshwingExtensionTest extends IntegrationTest {
         var result = testBuilder()
                 .buildScript("""
                         repositories {
-                            ashwing.repos().ftb()
-                            ashwing.repos().ftb(true) // Snapshots
+                            ashwing.repos(project).ftb()
+                            ashwing.repos(project).ftbSnapshots()
                         }
                         
                         tasks.register("testRepos") {
