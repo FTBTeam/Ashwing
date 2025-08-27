@@ -1,6 +1,7 @@
 package dev.ftb.plugins.ashwing;
 
 import dev.ftb.plugins.ashwing.extension.AshwingExtension;
+import dev.ftb.plugins.ashwing.tasks.GetRootVersion;
 import dev.ftb.plugins.ashwing.tasks.PrepareChangelog;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -14,6 +15,7 @@ public class AshwingPlugin implements Plugin<Project> {
         // Tasks
         TaskContainer tasks = project.getTasks();
         tasks.register("prepareChangelog", PrepareChangelog.class);
+        tasks.register("getRootVersion", GetRootVersion.class);
 
         // Extensions
         ExtensionContainer extensions = project.getExtensions();

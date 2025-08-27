@@ -13,7 +13,7 @@ Ashwing is provided in an `as-is` state and is under constant development. We we
 
 plugins {
     id 'dev.ftb.plugins.ashwing' version '$VERSION'
-}
+
 ```
 
 ## Features
